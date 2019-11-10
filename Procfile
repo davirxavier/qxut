@@ -1,1 +1,1 @@
-web: gunicorn wsgi.py --log-file -
+web: gunicorn qorkut.wsgi --log-file -
