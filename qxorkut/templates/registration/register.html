@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block center %}
+
+	<form>
+		{% csrf_token %}
+
+		{{form}}
+		<button type="submit" class="materialbutton ripple-header">Registrar</button>
+	</form>
+
+{% endblock %}

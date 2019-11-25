@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title%}Qxut{% endblock %}</title>
+
+	<link rel="stylesheet" type="text/css" href="{% block style %}/static/css/style.css{% endblock %}">
+</head>
+<body>
+
+	<header id="mainheader">
+		{% block headertitle %}
+			<p><a id = "headertitle" href="/qxut/">Qxut</a></p>
+		{% endblock %}
+
+		{% block headercontent %}
+			<div class="container" id="pesquisacontainer">
+				<input class="searchbar" type="text" name="pesquisainput" placeholder="Pesquisar...">
+			</div>
+
+			<div class="currentuser">
+				
+				<!--
+				<div class="userimgdiv" style="background-image: url(https://i.ytimg.com/vi/aEtm69mLK6w/hqdefault.jpg)"></div>
+				<label>Nicolazinho</label>
+				-->
+			</div>
+
+			<div class="container">
+
+				<ul>
+					<li><button href="#" class="materialbutton ripple-header">Postagens</button></li>
+					<li><button href="#" class="materialbutton ripple-header">Meu Perfil</button></li>
+					<li><button href="#" class="materialbutton ripple-header">Sair</button></li>
+				</ul>
+			</div>
+		{% endblock %}
+	</header><!-- /header -->
+
+	{% block maincontent %}
+		<div id="main-content">
+			<aside id="left-sidebar">
+				{% block left %}
+				
+				{% endblock %}
+			</aside>
+
+			<section id="center-pane">
+				{% block center %}
+				
+				{% endblock %}
+			</section>
+
+			<aside id="right-sidebar">
+				{% block right %}
+				
+				{% endblock %}
+			</aside>
+		</div>
+	{% endblock %}
+
+</body>
+</html>

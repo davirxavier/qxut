@@ -25,15 +25,17 @@ SECRET_KEY = 'd@!0frue7opnd++0a#hr$lif=4_@r_n1!m#wrfhk=!qg%+5@4k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['qorkut.herokuapp.com']
+ALLOWED_HOSTS = ['qorkut.herokuapp.com', 'localhost']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Application definition
 
 INSTALLED_APPS = [
+    'qxorkut.apps.QxorkutConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'crispy_forms',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -119,3 +121,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+#TEMPLATE_DIRS = (
+#    os.path.join(os.path.dirname(__file__), 'templates'),
+#)
+
+CRISPY_TEMPLATE_PACK="bootstrap4"
+
+LOGIN_URL = '/qxut/login/'
+
+LOGIN_REDIRECT_URL = '/qxut'
+LOGOUT_REDIRECT_URL = '/accounts/login'

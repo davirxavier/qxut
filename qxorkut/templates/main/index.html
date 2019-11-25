@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+
+{% block center %}
+
+	{% for post in posts %}
+		<div class="post-body">
+			<label class="postname">{{perfil.nome}} {{perfil.sobrenome}}</label>
+			<label class="posttime">10 hours ago</label>
+			<label class="posttext">{{post.texto}}</label>
+
+			{% if post.anexo %}
+				<img class="postimage" src="{{post.anexo.url}}" alt="not found">
+			{% endif %}
+		</div>
+	{% endfor %}
+
+{% endblock %}
