@@ -13,7 +13,14 @@ def index(request):
 
 	postagens = perfil.postagens.all()
 
-	return render(request, "main/index.html", {"perfil" : perfil, "posts" : postagens})
+	context = {
+		"perfil" : perfil, 
+		"posts" : postagens,
+		"username" : (perfil.nome + " " + perfil.sobrenome),
+		"userimageurl" : perfil.foto.url,
+	}
+
+	return render(request, "main/index.html", context)
 
 
 def register(request):

@@ -52,6 +52,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE_CLASSES = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    )
+
 ROOT_URLCONF = 'qorkut.urls'
 
 TEMPLATES = [
@@ -89,16 +93,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        #'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME' : 'qorkut.translated_password_validators.TranslatedUserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        #'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME' : 'qorkut.translated_password_validators.TranslatedMinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        #'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME' : 'qorkut.translated_password_validators.TranslatedCommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        #'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME' : 'qorkut.translated_password_validators.TranslatedNumericPasswordValidator',
     },
 ]
 
@@ -136,7 +144,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
-LOGIN_URL = '/qxut/login/'
+LOGIN_URL = 'qxut/login/'
+LOGOUT_URL = 'qxut/logout/'
 
-LOGIN_REDIRECT_URL = '/qxut'
-LOGOUT_REDIRECT_URL = '/qxut/login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/qxut/login/'

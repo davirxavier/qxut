@@ -69,6 +69,10 @@ a
 	background-color: #59009c;
 	outline: none;
 }
+.errorlist
+{
+	color: red;
+}
 
 .container
 {
@@ -150,6 +154,7 @@ a
 	flex-direction: row;
 	align-items: center;
 	padding-right: 50px;
+	font-size: 14px;
 }
 
 .hiddenlink
@@ -296,11 +301,12 @@ a
 #main-content
 {
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	position: fixed;
-	top: 60px;
+	top: 53px;
 	width: 100%;
-	max-height: 90%;
+	max-height: 91.3%;
+	height: 91.3%;
 }
 
 #center-pane
@@ -329,9 +335,6 @@ a
 
 #right-sidebar
 {
-	width: 20%;
 	flex-basis: 20%;
 	padding: 0 0 0 20px;
-
-	display: block;
 }

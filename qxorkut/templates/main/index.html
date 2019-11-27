@@ -1,5 +1,12 @@
 {% extends "main/base.html" %}
 
+{% block currentuser %}
+	<div class="currentuser">
+		<div class="userimgdiv" style="background-image: url({{userimageurl}})"></div>
+		<label>{{username}}</label>
+	</div>
+{% endblock %}
+	
 {% block center %}
 
 	{% for post in posts %}
@@ -14,4 +21,10 @@
 		</div>
 	{% endfor %}
 
+{% endblock %}
+
+{% block right %}
+	<div class="friendscontainer">
+		
+	</div>
 {% endblock %}
