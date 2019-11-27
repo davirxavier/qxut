@@ -28,7 +28,7 @@ a
   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #e1e1e1 radial-gradient(circle, transparent 1%, #e1e1e1 1%) center/15000%;
+  background: #59009c radial-gradient(circle, transparent 1%, #59009c 1%) center/15000%;
 }
 .ripple:active {
   background-color: #ffffff;
@@ -40,7 +40,7 @@ a
   transition: background 0.8s;
 }
 .ripple-header:hover {
-  background: #444 radial-gradient(circle, transparent 1%, #444 1%) center/15000%;
+  background: #ccc radial-gradient(circle, transparent 1%, #ccc 1%) center/15000%;
 }
 .ripple-header:active {
   background-color: #555;
@@ -54,9 +54,20 @@ a
   padding: 6px 12px;
   font-size: 16px;
   cursor: pointer;
-  color: white;
-  background-color: #555;
+  color: black;
+  background-color: #fff;
   outline: none;
+}
+.materialbuttondark
+{
+	border: none;
+	border-radius: 2px;
+	padding: 6px 12px;
+	font-size: 16px;
+	cursor: pointer;
+	color: white;
+	background-color: #59009c;
+	outline: none;
 }
 
 .container
@@ -236,7 +247,7 @@ a
 {
 	display: flex;
 	justify-content: space-between;
-	background-color: #555;
+	background-color: #3e026b;
 	color: white;
 	position: fixed;
 	top: 0;

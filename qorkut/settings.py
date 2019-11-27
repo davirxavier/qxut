@@ -139,4 +139,4 @@ CRISPY_TEMPLATE_PACK="bootstrap4"
 LOGIN_URL = '/qxut/login/'
 
 LOGIN_REDIRECT_URL = '/qxut'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/qxut/login'
