@@ -28,7 +28,7 @@ a
   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #59009c radial-gradient(circle, transparent 1%, #59009c 1%) center/15000%;
+  background: #497982 radial-gradient(circle, transparent 1%, #497982 1%) center/15000%;
 }
 .ripple:active {
   background-color: #ffffff;
@@ -40,10 +40,10 @@ a
   transition: background 0.8s;
 }
 .ripple-header:hover {
-  background: #ccc radial-gradient(circle, transparent 1%, #ccc 1%) center/15000%;
+  background: #fff radial-gradient(circle, transparent 1%, #ccc 1%) center/15000%;
 }
 .ripple-header:active {
-  background-color: #555;
+  background-color: #4F93A3;
   background-size: 100%;
   transition: background 0s;
 }
@@ -54,7 +54,7 @@ a
   padding: 6px 12px;
   font-size: 16px;
   cursor: pointer;
-  color: black;
+  color: #205760;
   background-color: #fff;
   outline: none;
 }
@@ -66,7 +66,7 @@ a
 	font-size: 16px;
 	cursor: pointer;
 	color: white;
-	background-color: #59009c;
+	background-color: #497982;
 	outline: none;
 }
 .errorlist
@@ -161,6 +161,7 @@ a
 {
 	display: block;
 	text-decoration: none;
+	color: black;
 }
 .hiddenlink label
 {
@@ -181,8 +182,9 @@ a
 	font-weight: bold;
 
 	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+	margin-bottom: 20px;
 
-	max-width: 100%;
+	max-width: auto;
 }
 .community-body .communitydesc
 {
@@ -192,6 +194,18 @@ a
 .community-body .communityimage
 {
 	max-width: 100%;
+}
+
+.postmake
+{
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+	padding: 10px;
+	padding-bottom: 0;
+	padding-top: 0;
+	display: flex;
+	flex-direction: column;
+
+	margin-bottom: 20px;
 }
 
 .post-body
@@ -252,7 +266,7 @@ a
 {
 	display: flex;
 	justify-content: space-between;
-	background-color: #3e026b;
+	background-color: #4F93A3;
 	color: white;
 	position: fixed;
 	top: 0;
@@ -301,7 +315,7 @@ a
 #main-content
 {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	position: fixed;
 	top: 53px;
 	width: 100%;
@@ -323,14 +337,13 @@ a
 
 #left-sidebar
 {
-	flex-basis: 20%;
+	flex-basis: 8.2%;
 	padding: 20px;
-	padding-left: 20px;
-	width: 20%;
-
-	display: block;
+	display: flex;
+	flex-direction: column;
 
 	overflow-y: auto;
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #right-sidebar

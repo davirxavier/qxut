@@ -2,17 +2,62 @@
 
 {% block currentuser %}
 	<div class="currentuser">
-		<div class="userimgdiv" style="background-image: url({{userimageurl}})"></div>
+		{% if userimage %}
+			<div class="userimgdiv" style="background-image: url({{userimage.url}})"></div>
+		{% else %}
+			<div class="userimgdiv" style="background-image: url(/static/img/userbig.png)"></div>
+		{% endif %}
 		<label>{{username}}</label>
 	</div>
 {% endblock %}
 	
+{% block left %}
+	{% for comunidade in comunidades %}
+		<a href="#" class="hiddenlink">
+			<div class=community-body>
+				{% if comunidade.foto %}
+					<img class="communityimage" src="{{comunidade.foto.url}}" alt="not found">
+				{% else %}
+					<img class="communityimage" src="/static/img/defuser.png" alt="not found">
+				{% endif %}
+
+				<label class="communityname">{{comunidade.nome}}</label>
+				<label class="communitydesc">{{comunidade.descricao}}</label>
+			</div>
+		</a>
+	{% endfor %}
+{% endblock%}
+
 {% block center %}
+
+	<div class="postmake">
+		<form action="#" method="POST">
+			{{ form.non_field_errors }}
+			<div style="display: flex; flex-direction: column;">
+				<div class="fieldWrapper">
+				    {{ form.text.errors }}
+				    <label for="{{ form.text.id_for_label }}"></label>
+				    {{ form.text }}
+		    	</div>
+
+				<div style="flex-basis: 80%; display: flex; flex-direction: row; align-items: center;">
+		    		<div class="fieldWrapper">
+				        {{ form.anexo.errors }}
+				        <label for="{{ form.anexo.id_for_label }}"></label>
+				        {{ form.anexo }}
+		    		</div>
+
+		    		<input style="flex-basis: 20%; max-height: 30px; max-width: 70px; margin-left: auto;" class="materialbuttondark ripple" type="submit" value="Postar">
+				</div>
+			</div>
+			
+		</form>
+	</div>
 
 	{% for post in posts %}
 		<div class="post-body">
 			<label class="postname">{{perfil.nome}} {{perfil.sobrenome}}</label>
-			<label class="posttime">10 hours ago</label>
+			<label class="posttime"> Postado a {{post.ago}}.</label>
 			<label class="posttext">{{post.texto}}</label>
 
 			{% if post.anexo %}
@@ -24,7 +69,21 @@
 {% endblock %}
 
 {% block right %}
-	<div class="friendscontainer">
-		
-	</div>
+	{% for amigo in amigos %}
+		<div class="friendscontainer">	
+			<a href="#" class="hiddenlink ripple">
+				<div class="friend-body">
+					{% if amigo.foto %}
+						<div class="userimgdiv" style="background-image: url({{amigo.foto.url}})">
+						</div>
+					{% else %}
+						<div class="userimgdiv" style="background-image: url(static/img/defuser.png)">
+						</div>
+					{% endif %}
+					<label class="username">{{amigo.nome}} {{amigo.sobrenome}}</label>
+					<!--<label class="useronline"> - Online</label>-->
+				</div>
+			</a>
+		</div>
+	{% endfor %}
 {% endblock %}

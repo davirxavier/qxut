@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
+from .models import Postagem
 
 def usernameErrorMess():
 	error_messages = {
@@ -53,4 +54,14 @@ class RegisterForm(UserCreationForm):
 			"password1",
 			"password2",
 			"image"
+		]
+
+class PostarForm(forms.models.ModelForm):
+	text = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'placeholder': 'Escreva algo...', "class" : "commentinput"}))
+	anexo = forms.FileField(label="Anexo", required=False)
+	class Meta:
+		model = Postagem
+		fields = [
+			"text",
+			"anexo"
 		]
