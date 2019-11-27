@@ -25,7 +25,7 @@ SECRET_KEY = 'd@!0frue7opnd++0a#hr$lif=4_@r_n1!m#wrfhk=!qg%+5@4k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['qorkut.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['qorkut.herokuapp.com', 'localhost', 'qxut.herokuapp.com']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
