@@ -85,7 +85,7 @@
 {% block javascript %}
 	<script>
 	    $('#postmakeform').submit(function (e) {
-	        //e.preventDefault();
+	        e.preventDefault();
 	        $form = $(this)
 	        var formData = new FormData(this);
 
@@ -95,6 +95,8 @@
 	            data: formData,
 	            success: function (data) {
 	                document.getElementById('postscontainer').innerHTML = data['response'];
+	                document.getElementById('textoinput').value = '';
+	                document.getElementById('postfileinput').value = '';
 	            },
 	            cache: false,
 	            contentType: false,

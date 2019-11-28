@@ -58,6 +58,7 @@ a
   background-color: #fff;
   outline: none;
 }
+input[type=file] button,
 .materialbuttondark
 {
 	border: none;

@@ -15,8 +15,16 @@
 		</div>
 		<label class="posttext">{{post.texto}}</label>
 
-		{% if post.anexo %}
+		{% if post.anexo and post.file_isimg %}
 			<img class="postimage" src="{{post.anexo.url}}" alt="not found">
+		{% elif post.anexo and not post.file_isimg %}
+			<div style="margin-top: 20px;">
+				{% load filename %}
+				<a style="display: flex; flex-direction: row; align-items: center;" href="{{post.anexo.url}}">
+					<img src="/static/img/fileicon.png" alt="fileicon.png" style="max-width: 20px; margin-right: 7px;">
+					{{post.anexo.file|filename}}
+				</a>
+			</div>
 		{% endif %}
 	</div>
 {% endfor %}

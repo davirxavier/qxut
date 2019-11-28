@@ -4,6 +4,7 @@ from .forms import RegisterForm
 from qxorkut.models import *
 from django.contrib.auth import login, authenticate
 import PIL
+from PIL import Image
 from datetime import datetime
 import pytz
 from .forms import PostarForm
@@ -27,34 +28,53 @@ def getTimedeltaString(t):
 		return strdelta
 	return strdelta
 
-def index(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect("/qxut/login")
-
-	perfil = request.user.perfil.first()
-	postagens = perfil.postagens.order_by('data')
+def preparePostsContext(request, perfil):
+	postagens = perfil.postagens.all()
 	for amigo in perfil.amigos.all():
-		postagens |= amigo.postagens.order_by('data')
+		postagens |= amigo.postagens.all()
 
-	comunidades = perfil.comunidades.all()
-	amigos = perfil.amigos.all()
-
+	postagens = postagens.order_by('data')
 	for postagem in postagens:
 		data = postagem.data.replace(tzinfo=pytz.utc)
 		now = datetime.now(pytz.utc)
 		diff = now - data
 		postagem.ago = getTimedeltaString(diff)
 
+		postagem.file_isimg = False
+		try:
+			if postagem.anexo:
+				filetest = Image.open(postagem.anexo.path)
+				postagem.file_isimg = True
+				#if filetest.verify():
+				#	postagem.file_isimg = True
+		except Exception as e:
+			postagem.file_isimg = False
+			
+
+	context = {
+		'posts' : postagens
+	}
+	return context
+
+def index(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect("/qxut/login")
+
+	perfil = request.user.perfil.first()
+
+	comunidades = perfil.comunidades.all()
+	amigos = perfil.amigos.all()
+
 	form = PostarForm()
 
 	context = {
-		"posts" : postagens,
 		"username" : (perfil.nome + " " + perfil.sobrenome),
 		"userimage" : perfil.foto,
 		"comunidades" : comunidades,
 		"amigos" : amigos,
 		"form" : form
 	}
+	context.update(preparePostsContext(request, perfil))
 
 	return render(request, "main/index.html", context)
 
@@ -75,17 +95,7 @@ def atualizarPosts(request):
 			
 		newpostagem.save()
 
-	postagens = perfil.postagens.all()
-
-	for postagem in postagens:
-		data = postagem.data.replace(tzinfo=pytz.utc)
-		now = datetime.now(pytz.utc)
-		diff = now - data
-		postagem.ago = getTimedeltaString(diff)
-
-	context = {
-		"posts" : postagens,
-	}
+	context = preparePostsContext(request, perfil)
 
 	rendered = render(request, "main/posts.html", context).content.decode()
 
@@ -96,7 +106,6 @@ def register(request):
 	if request.method == "POST":
 		form = RegisterForm(request.POST, request.FILES)
 
-		print(form.errors)
 		if form.is_valid():
 			user = form.save()
 
