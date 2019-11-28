@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import RegisterForm
 from qxorkut.models import *
 from django.contrib.auth import login, authenticate
@@ -32,7 +32,10 @@ def index(request):
 		return HttpResponseRedirect("/qxut/login")
 
 	perfil = request.user.perfil.first()
-	postagens = perfil.postagens.all()
+	postagens = perfil.postagens.order_by('data')
+	for amigo in perfil.amigos.all():
+		postagens |= amigo.postagens.order_by('data')
+
 	comunidades = perfil.comunidades.all()
 	amigos = perfil.amigos.all()
 
@@ -45,7 +48,6 @@ def index(request):
 	form = PostarForm()
 
 	context = {
-		"perfil" : perfil, 
 		"posts" : postagens,
 		"username" : (perfil.nome + " " + perfil.sobrenome),
 		"userimage" : perfil.foto,
@@ -56,6 +58,39 @@ def index(request):
 
 	return render(request, "main/index.html", context)
 
+def atualizarPosts(request):
+	user = request.user
+	if not user.is_authenticated:
+		return redirect("/qxut/login")
+
+	perfil = user.perfil.first()
+
+	form = PostarForm(request.POST, request.FILES)
+	if form.is_valid():
+		newpostagem = Postagem()
+		newpostagem.idperfil = perfil
+		newpostagem.texto = form.cleaned_data.get("text")
+		newpostagem.anexo = form.cleaned_data.get("anexo")
+		newpostagem.data = datetime.now(pytz.utc)
+			
+		newpostagem.save()
+
+	postagens = perfil.postagens.all()
+
+	for postagem in postagens:
+		data = postagem.data.replace(tzinfo=pytz.utc)
+		now = datetime.now(pytz.utc)
+		diff = now - data
+		postagem.ago = getTimedeltaString(diff)
+
+	context = {
+		"posts" : postagens,
+	}
+
+	rendered = render(request, "main/posts.html", context).content.decode()
+
+	response = {"response" : rendered}
+	return JsonResponse(response)
 
 def register(request):
 	if request.method == "POST":

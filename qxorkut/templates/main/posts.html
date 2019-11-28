@@ -1,0 +1,22 @@
+{% for post in posts reversed %}
+	<div class="post-body">
+		
+		<div style="display: flex; flex-direction: row;">
+			{% if post.idperfil.foto %}
+				<div class="userimgdiv" style="background-image: url({{post.idperfil.foto.url}})"></div>
+			{% else %}
+				<div class="userimgdiv" style="background-image: url(/static/img/defuser.png)"></div>
+			{% endif %}
+
+			<div style="display: flex; flex-direction: column;">
+				<label class="postname">{{post.idperfil.nome}} {{post.idperfil.sobrenome}}</label>
+				<label class="posttime"> Postado à {{post.ago}}.</label>
+			</div>
+		</div>
+		<label class="posttext">{{post.texto}}</label>
+
+		{% if post.anexo %}
+			<img class="postimage" src="{{post.anexo.url}}" alt="not found">
+		{% endif %}
+	</div>
+{% endfor %}

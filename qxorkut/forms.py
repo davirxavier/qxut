@@ -57,8 +57,8 @@ class RegisterForm(UserCreationForm):
 		]
 
 class PostarForm(forms.models.ModelForm):
-	text = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'placeholder': 'Escreva algo...', "class" : "commentinput"}))
-	anexo = forms.FileField(label="Anexo", required=False)
+	text = forms.CharField(max_length=500, widget=forms.TextInput(attrs={'id' : 'textoinput', 'placeholder': 'Escreva algo...', "class" : "commentinput"}))
+	anexo = forms.FileField(label="Anexo", required=False, widget=forms.FileInput(attrs={"id" : 'postfileinput'}))
 	class Meta:
 		model = Postagem
 		fields = [

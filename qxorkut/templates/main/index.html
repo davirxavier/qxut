@@ -5,7 +5,7 @@
 		{% if userimage %}
 			<div class="userimgdiv" style="background-image: url({{userimage.url}})"></div>
 		{% else %}
-			<div class="userimgdiv" style="background-image: url(/static/img/userbig.png)"></div>
+			<div class="userimgdiv" style="background-image: url(/static/img/defuser.png)"></div>
 		{% endif %}
 		<label>{{username}}</label>
 	</div>
@@ -31,7 +31,9 @@
 {% block center %}
 
 	<div class="postmake">
-		<form action="#" method="POST">
+		<form id="postmakeform" action="#" method="POST" action="/qxut/">
+			{% csrf_token %}
+
 			{{ form.non_field_errors }}
 			<div style="display: flex; flex-direction: column;">
 				<div class="fieldWrapper">
@@ -47,24 +49,16 @@
 				        {{ form.anexo }}
 		    		</div>
 
-		    		<input style="flex-basis: 20%; max-height: 30px; max-width: 70px; margin-left: auto;" class="materialbuttondark ripple" type="submit" value="Postar">
+		    		<input id="postmakesender" style="flex-basis: 20%; max-height: 30px; max-width: 70px; margin-left: auto;" class="materialbuttondark ripple" type="submit" value="Postar">
 				</div>
 			</div>
 			
 		</form>
 	</div>
 
-	{% for post in posts %}
-		<div class="post-body">
-			<label class="postname">{{perfil.nome}} {{perfil.sobrenome}}</label>
-			<label class="posttime"> Postado a {{post.ago}}.</label>
-			<label class="posttext">{{post.texto}}</label>
-
-			{% if post.anexo %}
-				<img class="postimage" src="{{post.anexo.url}}" alt="not found">
-			{% endif %}
-		</div>
-	{% endfor %}
+	<div id="postscontainer">
+		{% include "main/posts.html" %}
+	</div>
 
 {% endblock %}
 
@@ -86,4 +80,26 @@
 			</a>
 		</div>
 	{% endfor %}
+{% endblock %}
+
+{% block javascript %}
+	<script>
+	    $('#postmakeform').submit(function (e) {
+	        //e.preventDefault();
+	        $form = $(this)
+	        var formData = new FormData(this);
+
+	        $.ajax({
+	            url: "/qxut/add_post/",
+	            type: 'POST',
+	            data: formData,
+	            success: function (data) {
+	                document.getElementById('postscontainer').innerHTML = data['response'];
+	            },
+	            cache: false,
+	            contentType: false,
+	            processData: false
+	        });
+	    });
+ 	 </script>
 {% endblock %}
