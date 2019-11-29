@@ -12,20 +12,18 @@
 {% endblock %}
 	
 {% block left %}
-	{% for comunidade in comunidades %}
-		<a href="#" class="hiddenlink">
-			<div class=community-body>
-				{% if comunidade.foto %}
-					<img class="communityimage" src="{{comunidade.foto.url}}" alt="not found">
-				{% else %}
-					<img class="communityimage" src="/static/img/defuser.png" alt="not found">
-				{% endif %}
+	<div class="pesquisapane">
+		<input id="comunidadespesquisa" class="commentinput" type="text" placeholder="Procurar comunidades...">
+	</div>
 
-				<label class="communityname">{{comunidade.nome}}</label>
-				<label class="communitydesc">{{comunidade.descricao}}</label>
-			</div>
-		</a>
-	{% endfor %}
+	<div style="display: flex; flex-direction: column; margin-bottom: 10px;">
+		<label id="comunidadeslabel" class="amigoslabel">Comunidades</label>
+		<button onclick="window.location.href='/qxut/nova_comunidade/'" class="materialbuttondark ripple">Criar comunidade</button>
+	</div>
+
+	<div id="communitycontainer" class="friendscontainer">
+		{% include "main/comunidades.html" %}
+	</div>
 {% endblock%}
 
 {% block center %}
@@ -63,23 +61,17 @@
 {% endblock %}
 
 {% block right %}
-	{% for amigo in amigos %}
-		<div class="friendscontainer">	
-			<a href="#" class="hiddenlink ripple">
-				<div class="friend-body">
-					{% if amigo.foto %}
-						<div class="userimgdiv" style="background-image: url({{amigo.foto.url}})">
-						</div>
-					{% else %}
-						<div class="userimgdiv" style="background-image: url(static/img/defuser.png)">
-						</div>
-					{% endif %}
-					<label class="username">{{amigo.nome}} {{amigo.sobrenome}}</label>
-					<!--<label class="useronline"> - Online</label>-->
-				</div>
-			</a>
-		</div>
-	{% endfor %}
+	<div class="pesquisapane">
+		<input id="amigospesquisa" class="commentinput" type="text" placeholder="Procurar pessoas...">
+	</div>
+
+	<div style="display: flex;">
+		<label id="amigoslabel" class="amigoslabel">Amigos</label>
+	</div>
+
+	<div id = "friendscontainer" class="friendscontainer">	
+		{% include "main/amigos.html" %}
+	</div>
 {% endblock %}
 
 {% block javascript %}
@@ -97,6 +89,66 @@
 	                document.getElementById('postscontainer').innerHTML = data['response'];
 	                document.getElementById('textoinput').value = '';
 	                document.getElementById('postfileinput').value = '';
+	            },
+	            cache: false,
+	            contentType: false,
+	            processData: false
+	        });
+	    });
+
+	    $("#amigospesquisa").change(function () {
+	    	var token = '{{csrf_token}}';
+	    	var nome =  $("#amigospesquisa").val();
+	    	var formData = new FormData();
+	    	formData.append('nome', nome);
+
+	        $.ajax({
+	            url: "/qxut/busca_amigos/",
+	            type: "POST",
+	            data: formData,
+	            headers: {
+          		 	'X-CSRFToken': token,
+          		},
+	            success: function (data) {
+	                document.getElementById('friendscontainer').innerHTML = data['response'];
+	                if (data['vazio'])
+	                {
+	                	$('#amigoslabel').show();
+	                }
+	                else
+	                {
+	                	$('#amigoslabel').hide();
+	                }
+	            },
+	            cache: false,
+	            contentType: false,
+	            processData: false
+	        });
+	    });
+
+	     $("#comunidadespesquisa").change(function () {
+	    	var token = '{{csrf_token}}';
+	    	var nome =  $("#comunidadespesquisa").val();
+	    	var formData = new FormData();
+	    	formData.append('nome', nome);
+
+	        $.ajax({
+	            url: "/qxut/busca_comunidades/",
+	            type: "POST",
+	            data: formData,
+	            headers: {
+          		 	'X-CSRFToken': token,
+          		},
+	            success: function (data) {
+	                document.getElementById('communitycontainer').innerHTML = data['response'];
+	                if (data['vazio'])
+	                {
+	                	$('#comunidadeslabel').show();
+	                }
+	                else
+	                {
+	                	$('#comunidadeslabel').hide();
+	                }
 	            },
 	            cache: false,
 	            contentType: false,

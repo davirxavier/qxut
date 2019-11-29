@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+
+{% block center %}
+	<div class="perfilbody">
+		{% if perfilsolicitado.foto %}
+			<div class="userimgdivbig" style="margin-bottom: 10px; background-image: url({{perfilsolicitado.foto.url}});"></div>
+		{% else %}
+			<div class="userimgdivbig" style="margin-bottom: 10px; background-image: url(/static/img/defuser.png);"></div>
+		{% endif %}
+
+		<label style="margin-bottom: 10px;">{{perfilsolicitado.nome}}</label>
+		<label style="margin-bottom: 10px; font-size: 13px; font-weight: normal;">{{perfilsolicitado.sobrenome}}</label>
+		
+		{% if postquantidade == 1 %}
+			<label class="perfilposts">{{postquantidade}} postagem</label>
+		{% else %}
+			<label class="perfilposts">{{postquantidade}} postagens</label>
+		{% endif%}
+	</div>
+
+	<div id="postscontainer">
+		{% include "main/posts.html" %}
+	</div>
+{% endblock %}

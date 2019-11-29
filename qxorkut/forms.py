@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
-from .models import Postagem
+from .models import *
 
 def usernameErrorMess():
 	error_messages = {
@@ -64,4 +64,16 @@ class PostarForm(forms.models.ModelForm):
 		fields = [
 			"text",
 			"anexo"
+		]
+
+class ComunidadeForm(forms.models.ModelForm):
+	nome = forms.CharField(label='Nome da Comunidade', max_length=150, widget=forms.TextInput(attrs={}), error_messages={"unique" : "Já existe uma comunidade com esse nome."})
+	descricao = forms.CharField(label='Descrição da comunidade', max_length=500, widget=forms.TextInput(attrs={}))
+	foto = forms.ImageField(label='Foto da comunidade', required=False, error_messages=imageErrorMess())
+	class Meta:
+		model = Comunidade
+		fields = [
+			"nome",
+			"descricao",
+			"foto"
 		]

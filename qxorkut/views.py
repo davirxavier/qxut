@@ -7,7 +7,7 @@ import PIL
 from PIL import Image
 from datetime import datetime
 import pytz
-from .forms import PostarForm
+from .forms import *
 
 def strfdelta(tdelta, fmt):
     d = {"days": tdelta.days}
@@ -56,6 +56,46 @@ def preparePostsContext(request, perfil):
 	}
 	return context
 
+def perfil(request, id):
+	perfil = Perfil.objects.get(pk=id)
+	perfiluser = request.user.perfil.first()
+
+	posts = perfil.postagens.order_by('data')
+	for postagem in posts:
+		data = postagem.data.replace(tzinfo=pytz.utc)
+		now = datetime.now(pytz.utc)
+		diff = now - data
+		postagem.ago = getTimedeltaString(diff)
+
+		postagem.file_isimg = False
+		try:
+			if postagem.anexo:
+				filetest = Image.open(postagem.anexo.path)
+				postagem.file_isimg = True
+				#if filetest.verify():
+				#	postagem.file_isimg = True
+		except Exception as e:
+			postagem.file_isimg = False
+
+	amigos = perfil.amigos.all()
+	comunidades = perfil.comunidades.all()
+
+	isamigo = False
+	if perfiluser.amigos.filter(id=perfil.id).exists():
+		isamigo = True
+
+	context = {
+		"perfilsolicitado" : perfil, 
+		"perfil" : perfiluser,
+		"posts" : posts, 
+		"postquantidade" : posts.count,
+		"amigos" : amigos,
+		"comunidades" : comunidades,
+		"isamigo" : isamigo,
+	}
+
+	return render(request, 'main/perfil.html', context)
+
 def index(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect("/qxut/login")
@@ -68,6 +108,7 @@ def index(request):
 	form = PostarForm()
 
 	context = {
+		"perfil" : perfil,
 		"username" : (perfil.nome + " " + perfil.sobrenome),
 		"userimage" : perfil.foto,
 		"comunidades" : comunidades,
@@ -129,3 +170,146 @@ def register(request):
 		form = RegisterForm()
 
 	return render(request, "registration/register.html", {"form" : form})
+
+def busca_amigos(request):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	text = request.POST.get('nome', '')
+	
+	vazio = False
+	if text == '':
+		perfil = request.user.perfil.first()
+		amigos = perfil.amigos.all()
+		vazio = True
+	else:
+		amigos = Perfil.objects.filter(nome__contains=text)
+		amigos |= Perfil.objects.filter(sobrenome__contains=text)
+
+	context = {
+		'amigos' : amigos,
+	}
+
+	rendered = render(request, "main/amigos.html", context).content.decode()
+
+	response = {"response" : rendered, 'vazio' : vazio,}
+	return JsonResponse(response)
+
+def add_amigo(request):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	perfil = request.user.perfil.first()
+	idamigo = request.POST.get("id")
+	amigo_passado = Perfil.objects.get(pk = idamigo)
+	amigo = Amigo()
+	amigo.idperfil = perfil
+	amigo.amigo = amigo_passado
+	amigo.save()
+
+	return HttpResponse("200")
+
+def rem_amigo(request):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	idamigo = request.POST.get("id")
+	Amigo.objects.filter(amigo = idamigo).delete()
+
+	return HttpResponse("200")
+
+def busca_comunidades(request):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	text = request.POST.get('nome', '')
+	
+	vazio = False
+	if text == '':
+		perfil = request.user.perfil.first()
+		comunidades = perfil.comunidades.all()
+		vazio = True
+	else:
+		comunidades = Comunidade.objects.filter(nome__contains=text)
+
+	context = {
+		'comunidades' : comunidades,
+	}
+
+	rendered = render(request, "main/comunidades.html", context).content.decode()
+
+	response = {"response" : rendered, 'vazio' : vazio,}
+	return JsonResponse(response)
+
+def nova_comunidade(request):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	if request.method == "POST":
+		form = ComunidadeForm(request.POST, request.FILES)
+
+		if form.is_valid():
+			comunidade = Comunidade()
+			comunidade.nome = form.cleaned_data.get("nome")
+			comunidade.descricao = form.cleaned_data.get("descricao")
+			comunidade.foto = form.cleaned_data.get("foto")
+			print(form.cleaned_data.get("foto"))
+
+			perfil = Perfil()
+			perfil.iduser = request.user
+			perfil.nome = comunidade.nome
+			perfil.sobrenome = comunidade.descricao
+			perfil.foto = form.cleaned_data.get("foto")
+			perfil.save()
+
+			comunidade.idadmin = request.user.perfil.first()
+			comunidade.comunidade_perfil = perfil
+			comunidade.save()
+
+			request.user.perfil.first().comunidades.add(comunidade)
+
+			return redirect("/qxut/")
+	else:
+		form = ComunidadeForm()
+	
+	context = {
+		"form" : form,
+	}
+
+	return render(request, "main/novacomunidade.html", context)
+
+def comunidade(request, id):
+	if not request.user.is_authenticated:
+		return redirect("/qxut/login")
+
+	comunidade = Comunidade.objects.get(pk=id)
+
+	perfil = comunidade.comunidade_perfil
+	perfiluser = request.user.perfil.first()
+
+	posts = perfil.postagens.order_by('data')
+	for postagem in posts:
+		data = postagem.data.replace(tzinfo=pytz.utc)
+		now = datetime.now(pytz.utc)
+		diff = now - data
+		postagem.ago = getTimedeltaString(diff)
+
+		postagem.file_isimg = False
+		try:
+			if postagem.anexo:
+				filetest = Image.open(postagem.anexo.path)
+				postagem.file_isimg = True
+				#if filetest.verify():
+				#	postagem.file_isimg = True
+		except Exception as e:
+			postagem.file_isimg = False
+
+	context = {
+		"comunidade" : comunidade,
+		"perfilsolicitado" : perfil, 
+		"perfil" : perfiluser,
+		"posts" : posts, 
+		"postquantidade" : posts.count,
+	}
+
+	return render(request, 'main/comunidade.html', context)

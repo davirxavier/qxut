@@ -20,10 +20,11 @@ class Postagem(models.Model):
 	data = models.DateTimeField()
 
 class Comunidade(models.Model):
-	nome = models.CharField(max_length = 300)
+	nome = models.CharField(max_length = 300, unique=True)
 	descricao = models.CharField(max_length = 500)
 	foto = models.FileField(upload_to='media/', null=True, blank=True)
 	idadmin = models.ForeignKey(Perfil, related_name = "comunidades_admin", on_delete = models.CASCADE)
+	comunidade_perfil = models.ForeignKey(Perfil, related_name = "comunidade_perfil", on_delete = models.CASCADE)
 
 class Perfil_Comunidade(models.Model):
 	idcomunidade = models.ForeignKey(Comunidade, on_delete = models.CASCADE, related_name = "comunidades")

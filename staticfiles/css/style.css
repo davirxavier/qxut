@@ -22,6 +22,11 @@ a
 	text-decoration: none;
 }
 
+.titleimage
+{
+	max-width: 50px;
+}
+
 /* Ripple effect */
 .ripple {
   background-position: center;
@@ -95,10 +100,23 @@ input[type=file] button,
 	border: 1px solid #c7c7c7;
 }
 
+.pesquisapane
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 10px;
+	/*
+	margin: 5px;
+	margin-left: 10px;
+	*/
+}
+
 .commentinput
 {
 	border-width: 0px 0px 1px 0px;
 	border-color: #c7c7c7;
+	padding: 7px;
 }
 .commentinput:focus
 {
@@ -148,6 +166,17 @@ input[type=file] button,
   	border-radius: 50%;
   	margin-right: 10px;
 }
+.userimgdivbig
+{
+	background-size: 128px 128px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+  	width: 128px;
+  	height: 128px;
+
+  	border-radius: 50%;
+  	margin-right: 10px;
+}
 
 .currentuser
 {
@@ -156,6 +185,38 @@ input[type=file] button,
 	align-items: center;
 	padding-right: 50px;
 	font-size: 14px;
+}
+
+.perfilbody
+{
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	background-color: #497982;
+
+	border-radius: 10px;
+
+	margin-left: auto;
+	margin-right: auto;
+
+	font-weight: bold;
+	color: #fff;
+	font-size: 20px;
+
+	max-width: 200px;
+
+	margin-bottom: 20px;
+}
+.perfilposts
+{
+	color: #fff;
+	font-size: 12px;
+	margin-bottom: 10px;
+	font-style: italic;
+	font-weight: normal;
 }
 
 .hiddenlink
@@ -173,8 +234,28 @@ input[type=file] button,
 	color: inherit;
 }
 
+.amigoslabel
+{
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
+	margin-bottom: 10px;
+	color: #333;
+}
+
+.communitycontainer
+{
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+	height: 100%;
+	width: 100%;
+}
 .community-body
 {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -185,7 +266,7 @@ input[type=file] button,
 	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
 	margin-bottom: 20px;
 
-	max-width: auto;
+	max-width: 80%;
 }
 .community-body .communitydesc
 {
@@ -287,15 +368,7 @@ input[type=file] button,
 	flex: 1;
 	margin-left: 20px;
 	margin-right: 20px;
-}
-
-#pesquisacontainer
-{
-	flex: 3;
-}
-#pesquisacontainer .searchbar
-{
-	width: 80%;
+	background-color: red;
 }
 
 #mainheader ul
@@ -329,7 +402,6 @@ input[type=file] button,
 	padding: 20px;
 	padding-left: 20px;
 	flex-basis: 60%;
-	width: 60%;
 
 	display: block;
 
@@ -338,13 +410,8 @@ input[type=file] button,
 
 #left-sidebar
 {
-	flex-basis: 8.2%;
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-
-	overflow-y: auto;
-	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+	flex-basis: 20%;
+	padding-right: 60px;
 }
 
 #right-sidebar

@@ -10,27 +10,25 @@
 
 	<header id="mainheader">
 		{% block headertitle %}
-			<p><a id = "headertitle" href="/qxut/">Qxut</a></p>
+			<img class="titleimage" src="/static/img/defuser.png" alt="Q">
+			<label style="margin-right: auto; margin-top: auto; margin-bottom: auto; font-weight: bold; font-size: 20px;">xut</label>
 		{% endblock %}
 
 		{% block headercontent %}
-			<div class="container" id="pesquisacontainer">
-				<input class="searchbar" type="text" name="pesquisainput" placeholder="Pesquisar...">
-			</div>
+			<div style="display: flex;">
+				{% block currentuser %}
+					<div class="currentuser">
+						
+					</div>
+				{% endblock %}
 
-			{% block currentuser %}
-				<div class="currentuser">
-					
+				<div class="container">
+					<ul>
+						<li><button onclick="window.location.href='/qxut/'" class="materialbutton ripple-header">Postagens</button></li>
+						<li><button onclick="window.location.href='/qxut/perfil/{{perfil.id}}'" class="materialbutton ripple-header">Meu Perfil</button></li>
+						<li><button onclick="window.location.href='/qxut/logout'" class="materialbutton ripple-header">Sair</button></li>
+					</ul>
 				</div>
-			{% endblock %}
-
-			<div class="container">
-
-				<ul>
-					<li><button href="#" class="materialbutton ripple-header">Postagens</button></li>
-					<li><button href="#" class="materialbutton ripple-header">Meu Perfil</button></li>
-					<li><button onclick="window.location.href='/qxut/logout'" class="materialbutton ripple-header">Sair</button></li>
-				</ul>
 			</div>
 		{% endblock %}
 	</header><!-- /header -->
