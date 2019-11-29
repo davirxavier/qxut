@@ -287,29 +287,35 @@ def comunidade(request, id):
 	perfil = comunidade.comunidade_perfil
 	perfiluser = request.user.perfil.first()
 
-	posts = perfil.postagens.order_by('data')
-	for postagem in posts:
-		data = postagem.data.replace(tzinfo=pytz.utc)
-		now = datetime.now(pytz.utc)
-		diff = now - data
-		postagem.ago = getTimedeltaString(diff)
+	form = None
+	if perfiluser.id == comunidade.idadmin.id:
+		if request.method == "POST":
+			form = PostarForm(request.POST, request.FILES)
+			if form.is_valid():
+				newpostagem = Postagem()
+				newpostagem.idperfil = perfil
+				newpostagem.texto = form.cleaned_data.get("text")
+				newpostagem.anexo = form.cleaned_data.get("anexo")
+				newpostagem.data = datetime.now(pytz.utc)
+					
+				newpostagem.save()
 
-		postagem.file_isimg = False
-		try:
-			if postagem.anexo:
-				filetest = Image.open(postagem.anexo.path)
-				postagem.file_isimg = True
-				#if filetest.verify():
-				#	postagem.file_isimg = True
-		except Exception as e:
-			postagem.file_isimg = False
+				context = preparePostsContext(request, perfil)
+				count = context.get('posts').count()
+				rendered = render(request, "main/posts.html", context).content.decode()
+
+				response = {"response" : rendered, "count" : count}
+				return JsonResponse(response)
+		else:
+			form = PostarForm()
 
 	context = {
 		"comunidade" : comunidade,
 		"perfilsolicitado" : perfil, 
 		"perfil" : perfiluser,
-		"posts" : posts, 
-		"postquantidade" : posts.count,
+		"form": form
 	}
+	context.update(preparePostsContext(request, perfil))
+	context.update({"postquantidade" : context.get('posts').count,})
 
 	return render(request, 'main/comunidade.html', context)
