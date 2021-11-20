@@ -15,17 +15,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd@!0frue7opnd++0a#hr$lif=4_@r_n1!m#wrfhk=!qg%+5@4k'
+SECRET_KEY = os.getenv('SECRET_KEY', 'd@!0frue7opnd++0a#hr$lif=4_@r_n1!m#wrfhk=!qg%+5@4k')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['qorkut.herokuapp.com', 'localhost', 'qxut.herokuapp.com']
+ALLOWED_HOSTS = ['qorkut.herokuapp.com', 'localhost', '127.0.0.1', 'qxut.herokuapp.com']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
