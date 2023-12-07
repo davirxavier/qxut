@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  qxut:
+    restart: always
+    pull_policy: build
+    depends_on:
+      - qxutdb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ENABLE_REMOTE_DB: "True"
+      DATABASE_URL: "postgres://postgres:${POSTGRES_PASSWORD}@qxutdb:5432/postgres"
+    ports:
+      - "${EXTERNAL_PORT}:8000"
+  qxutdb:
+    image: "postgres:9.6-alpine"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

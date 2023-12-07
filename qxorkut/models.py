@@ -26,6 +26,6 @@ class Comunidade(models.Model):
 	idadmin = models.ForeignKey(Perfil, related_name = "comunidades_admin", on_delete = models.CASCADE)
 	comunidade_perfil = models.ForeignKey(Perfil, related_name = "comunidade_perfil", on_delete = models.CASCADE)
 
-class Perfil_Comunidade(models.Model):
+class Perfil_Comunidade(models.Model):!
 	idcomunidade = models.ForeignKey(Comunidade, on_delete = models.CASCADE, related_name = "comunidades")
 	idperfil = models.ForeignKey(Perfil, on_delete = models.CASCADE, related_name = 'perfil_comunidade')

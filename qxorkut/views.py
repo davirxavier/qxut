@@ -253,7 +253,6 @@ def nova_comunidade(request):
 			comunidade.nome = form.cleaned_data.get("nome")
 			comunidade.descricao = form.cleaned_data.get("descricao")
 			comunidade.foto = form.cleaned_data.get("foto")
-			print(form.cleaned_data.get("foto"))
 
 			perfil = Perfil()
 			perfil.iduser = request.user
